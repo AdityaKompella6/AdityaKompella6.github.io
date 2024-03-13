@@ -1,5 +1,3 @@
-Here you can say lots of fun things about your site.
+Masters Student at Cornell University with work experience 
 
-Maybe say a some things about yourself.
-
-Or maybe what you plan to blog about.
+and passion in the field of Machine Learning and Deep Learning.
