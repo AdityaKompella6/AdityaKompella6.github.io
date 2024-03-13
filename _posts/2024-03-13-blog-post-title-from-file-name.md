@@ -22,7 +22,7 @@ Here is the algorithm in my own words:
    
 Here are the commonly used features in the algorithm:
 
-![Alt Text](../_imgs/CEM.png)
+![Alt Text](../_imgs/Tetris_Features.png)
 
 If you look at step 3, we need to figure out good weights for each of these features to determine how good a state is.
 
