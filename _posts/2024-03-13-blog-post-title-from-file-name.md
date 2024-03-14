@@ -148,6 +148,10 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 ```
 We can see that the cpp file is very simple and essentially it just calls the function we defined in the .cu file. Additionally, it creates the output tensor to store the results of the operation and the input random vector. It also does a check to make sure that the tensor is on the GPU and that it is contiguous in memory.
 ### Benchmarks
+The GPU that I used to benchmark this code was the GPU in my local laptop: RTX 3070
+
+Although this is quite an old GPU model, it can still show how efficient our kernel is on the GPU.
+
 Since the kernel I defined could have a max number_of_samples = 1024(sufficient in practice) I fixed the number_of_samples to be 1024 and benchmarked the PyTorch and CUDA kernels while varying the dimension d of the vector.
 
 To properly benchmark gpu kernels, using cuda events is the best way to go about it.
@@ -180,13 +184,27 @@ I decided to include the compiled code in the benchmark as well.
 I ran each kernel 1000 times and average the time taken for the kernel for different vector dimensions d
 Here is a plot of those runtimes:
 
-We can see that the compiled function is slower than both my kernel so I decided to not include it in the next visualization.
+Since the compiled function is slower than both my kernel and the PyTorch kernel, I decided to not include it in the next visualization.
 I decided to plot the speedup of my kernel compared to the PyTorch kernel as well for different vector dimensions d:
-### Conclusion
 
-#### Some Python Code
-```python
-import torch
-a = torch.pow(3,2)
-print(a)
-```
+### Conclusion
+The speedup we see that my kernel achieves is could be due to "Kernel Fusion" where our method combines all the operations into one kernel 
+as opposed to calling a multiply kernel and an add kernel.
+
+What is cool is that torch.compile slows down the torch version so our custom kernel was better than the magic sorcery behind torch.compile.
+
+Pytorch is quite optimized so being able to speed up performance on large vector sizes (1800-2500)
+is great and could be really useful when having to optimize large vectors using CEM.
+
+The insane speed-up at sizes close to 2000 makes it seem like having the number of blocks = 2000 maxes out the occupancy of the 
+GPU and makes the GPU go fast.
+It is still quite impressive to achieve 50% speedup which it achieves on average on vector sizes ranging
+from 1 - 5,000.
+
+Overall tackling this problem was a great way for me to learn more about how to create CUDA extensions for PyTorch and helped me get exposure to how to speed-up
+code for a certain task.
+
+Many more optimizations could be done to this code. The next steps, if you wanted to squeeze out more performance from this code, would be to use a profiler like NCU to determine the bottlenecks in the code and use optimizations like using shared memory and techniques like thread-coarsening or more advanced techniques.
+I would appreciate any feedback in the comments on how I could make this algorithm even faster on what the runtimes look like on much more modern GPUs and if the trends still hold.
+Thanks For Reading :)
+
