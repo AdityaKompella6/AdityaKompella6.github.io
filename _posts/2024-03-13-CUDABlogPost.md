@@ -23,7 +23,7 @@ Here is the algorithm in my own words:
    
 Here are the commonly used features in the algorithm:
 
-![Alt Text](../_imgs/Tetris_Features.png)
+![Alt Text](/_imgs/Tetris_Features.png)
 
 If you look at step 3, we need to figure out good weights for each of these features to determine how good a state is.
 
@@ -34,11 +34,11 @@ We first start with a vector of random weights $\mu$ and $\sigma$ vector of the 
 Then we apply the CEM algorithm as shown below:\
 Here is an Overview of the algorithm:
 
-![Alt Text](../_imgs/CEM.png)
+![Alt Text](/_imgs/CEM.png)
 
 Here is a visual representation of that same algorithm:
 
-![Alt Text](../_imgs/CEM_visualization.png)
+![Alt Text](/_imgs/CEM_visualization.png)
 
 This is very similar to evolutionary algorithms, and by using CEM for many iterations, 
 slowly the weights you choose will become better and better.
@@ -57,7 +57,7 @@ $$Z \sim N(0,1)$$
 We can extend this to multi-dimension vectors as follows:
 Lets say our $\mu$ and $\sigma$ are d dimensional vectors and we are trying to sample N random vectors:
 
-![Alt Text](../_imgs/Random_Sample.png)
+![Alt Text](/_imgs/Random_Sample.png)
 
 With the Broadcasting of these tensors, we end up with a tensor of shape (d x N) which represents our N randomly 
 sampled vectors of dimension d which is our desired output.
@@ -194,13 +194,13 @@ I decided to include the compiled code in the benchmark as well.\
 I ran each kernel 1000 times and average the time taken for the kernel for different vector dimensions d\
 Here is a plot of those runtimes:
 
-![Alt Text](../_imgs/Kernel_Timing.png)
+![Alt Text](/_imgs/Kernel_Timing.png)
 
 Since the compiled function is faster than the PyTorch kernel on average, I decided to not include the normal PyTorch kernel in the next visualization.\
 The Speedup of our kernel = (Compiled Torch Time/ My Kernel Time)\
 I decided to plot the speedup of my kernel compared to the Compiled PyTorch kernel as well for different vector dimensions d:
 
-![Alt Text](../_imgs/Speedup.png)
+![Alt Text](/_imgs/Speedup.png)
 
 We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 3.79 x\
 That's close to a 400% increase in performance on average!!!!
