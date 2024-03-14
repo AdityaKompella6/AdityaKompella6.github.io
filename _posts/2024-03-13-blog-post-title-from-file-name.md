@@ -193,29 +193,39 @@ I decided to include the compiled code in the benchmark as well.
 I ran each kernel 1000 times and average the time taken for the kernel for different vector dimensions d
 Here is a plot of those runtimes:
 
-Since the compiled function is slower than both my kernel and the PyTorch kernel, I decided to not include it in the next visualization.
-I decided to plot the speedup of my kernel compared to the PyTorch kernel as well for different vector dimensions d:
+![Alt Text](../_imgs/Random_Sample.png)
+
+Since the compiled function is faster than the PyTorch kernel on average, I decided to not include the normal PyTorch kernel in the next visualization.
+
+The Speedup of our kernel = (Compiled Torch Time/ My Kernel Time)
+
+I decided to plot the speedup of my kernel compared to the Compiled PyTorch kernel as well for different vector dimensions d:
+
+![Alt Text](../_imgs/Random_Sample.png)
+
+We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 1.25 x
 
 ### Conclusion
-The speedup we see that my kernel achieves is could be due to "Kernel Fusion" where our method combines all the operations into one kernel 
+We can see that the compiled torch code is much faster at larger vector sizes than the raw PyTorch code.
+
+The speedup we see that my kernel achieves compared to the raw PyTorch kernel could be due to "Kernel Fusion" where our method combines all the operations into one kernel 
 as opposed to calling a multiply kernel and an add kernel.
 
-What is cool is that torch.compile slows down the torch version so our custom kernel was better than the magic sorcery behind torch.compile.
+What is cool is that our method is a good amount faster than torch.compile on small vector sizes and a little bit faster on large vector sizes.
 
-Pytorch is quite optimized so being able to speed up performance on large vector sizes (1800-2500)
-is great and could be really useful when having to optimize large vectors using CEM.
-
-The insane speed-up at sizes close to 2000 makes it seem like having the number of blocks = 2000 maxes out the occupancy of the 
-GPU and makes the GPU go fast.
-It is still quite impressive to achieve 50% speedup which it achieves on average on vector sizes ranging
-from 1 - 5,000.
+Pytorch is quite optimized and torch.compile usually creates very efficient code so being able to speed up performance on all vector sizes
+is great and could be very useful in the many algorithms that use it a lot like CEM.
 
 Overall tackling this problem was a great way for me to learn more about how to create CUDA extensions for PyTorch and helped me get exposure to how to speed-up
 code for a certain task.
 
 I have uploaded all the code to Github if you would like to run the benchmarks yourself on your own computer: INSERT LINK
 
-Many more optimizations could be done to this code. The next steps, if you wanted to squeeze out more performance from this code, would be to use a profiler like NCU to determine the bottlenecks in the code and use optimizations like using shared memory and techniques like thread-coarsening or more advanced techniques.
+Many more optimizations could be done to this code. 
+
+The next steps, if you wanted to squeeze out more performance from this code, would be to use a profiler like NCU to determine the bottlenecks in the code and use optimizations like using shared memory and techniques like thread-coarsening or more advanced techniques.
+
 I would appreciate any feedback in the comments on how I could make this algorithm even faster on what the runtimes look like on much more modern GPUs and if the trends still hold.
+
 Thanks For Reading :)
 
