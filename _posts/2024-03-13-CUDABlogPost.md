@@ -49,17 +49,11 @@ This step is the most general and is used everywhere in scientific computing and
 ### Algorithm
 If we focus on how to sample from a Normal Distribution, we can use the following formulation.
 
-\begin{equation}
-X \sim N(\mu, \sigma^2) \tag{1}
-\end{equation}
+$$ X \sim N(\mu, \sigma^2) $$
 
-\begin{equation}
-X = \mu + Z\sigma \tag{2}
-\end{equation}
+$$ X = \mu + Z\sigma $$
 
-\begin{equation}
-Z \sim N(0,1) \tag{3}
-\end{equation}
+$$ Z \sim N(0,1) $$
 
 We can extend this to multi-dimension vectors as follows:
 Lets say our $\mu \$ and $\sigma \$ are d dimensional vectors and we are trying to sample N random vectors:
