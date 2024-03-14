@@ -50,9 +50,7 @@ This step is the most general and is used everywhere in scientific computing and
 If we focus on how to sample from a Normal Distribution, we can use the following formulation.
 
 $$X \sim N(\mu, \sigma^2)$$
-
 $$X = \mu + Z\sigma$$
-
 $$Z \sim N(0,1)$$
 
 We can extend this to multi-dimension vectors as follows:
