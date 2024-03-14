@@ -203,7 +203,9 @@ I decided to plot the speedup of my kernel compared to the Compiled PyTorch kern
 
 ![Alt Text](../_imgs/Random_Sample.png)
 
-We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 1.25 x
+We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 3.79 x
+
+That's close to a 400% increase in performance on average!!!!
 
 ### Conclusion
 We can see that the compiled torch code is much faster at larger vector sizes than the raw PyTorch code.
