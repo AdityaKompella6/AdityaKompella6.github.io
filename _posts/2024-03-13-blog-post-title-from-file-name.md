@@ -58,8 +58,8 @@ $$X = \mu + Z\sigma$$
 $$Z \sim N(0,1)$$
 
 We can extend this to multi-dimension vectors as follows:
-
-TODO: Include Powerpoint Pic of the Algorithm
+Lets say our $\mu$ and $\sigma$ are d dimensional vectors and we are trying to sample N random vectors:
+![Alt Text](../_imgs/CEM.png)
 
 With the Broadcasting of these tensors, we end up with a tensor of shape (d x N) which represents our N randomly 
 sampled vectors of dimension d which is our desired output.
