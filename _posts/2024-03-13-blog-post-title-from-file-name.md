@@ -71,9 +71,9 @@ Implementing this in Pytorch is very simple. We can implement it just like the e
 import torch
 num_samples = 1024
 vector_dim = 2500
-mu = torch.randn(vector_dim,device="cuda")
-sigma = torch.randn(vector_dim,device="cuda")
-output = mu + sigma * torch.randn((num_samples,1),device="cuda")
+mu = torch.randn((vector_dim,1),device="cuda")
+sigma = torch.randn((vector_dim,1),device="cuda")
+output = mu + sigma * torch.randn((1,num_samples),device="cuda")
 ```
 
 ### How to Develop CUDA custom C++ extensions for PyTorch
