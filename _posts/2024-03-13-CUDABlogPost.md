@@ -17,7 +17,7 @@ neural network-based approaches that exist today.\
 Here is the algorithm in my own words:
 1. Compute all possible next moves(Where/What block you will place)
 2. For each next state of the game, compute features for that state.
-3. Weight each feature by a weight $w_i$ and sum them up to get a value for the possible next states.
+3. Weight each feature by a weight $w_i \$ and sum them up to get a value for the possible next states.
 4. Choose the action that takes you to the state with the largest value.
 5. Repeat
    
@@ -30,7 +30,7 @@ If you look at step 3, we need to figure out good weights for each of these feat
 How do we do that?
 
 That's where the Cross Entropy Method comes into play.\
-We first start with a vector of random weights $\mu$ and $\sigma$ vector of the standard deviation of each of those weights(ex: all 1 at the beginning)\
+We first start with a vector of random weights $\mu \$ and $\sigma \$ vector of the standard deviation of each of those weights(ex: all 1 at the beginning)\
 Then we apply the CEM algorithm as shown below:\
 Here is an Overview of the algorithm:
 
@@ -48,6 +48,7 @@ This step is the most general and is used everywhere in scientific computing and
 
 ### Algorithm
 If we focus on how to sample from a Normal Distribution, we can use the following formulation.
+
 $$X \sim N(\mu, \sigma^2)$$
 
 $$X = \mu + Z\sigma$$
@@ -55,7 +56,7 @@ $$X = \mu + Z\sigma$$
 $$Z \sim N(0,1)$$
 
 We can extend this to multi-dimension vectors as follows:
-Lets say our $\mu$ and $\sigma$ are d dimensional vectors and we are trying to sample N random vectors:
+Lets say our $\mu \$ and $\sigma \$ are d dimensional vectors and we are trying to sample N random vectors:
 
 ![](/img/Random_Sample.png)
 
@@ -94,7 +95,7 @@ The math each thread computes is identical to the Pytorch version.
 
 Since in most CUDA GPUs, the max threads per block is 1024, the maximum number of samples we can have is 1024 with this strategy(This is a reasonable number in practice).
 
-Here is the .cu code that defines the cuda kernel that computes the output given the input $\mu$, $\sigma$ and $Z$ vectors:
+Here is the .cu code that defines the cuda kernel that computes the output given the input $\mu \$, $\sigma \$ and $Z \$ vectors:
 ```cpp
 #include <cuda_runtime_api.h>
 #include <cuda.h>
