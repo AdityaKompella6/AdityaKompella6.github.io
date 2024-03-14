@@ -88,11 +88,38 @@ For example, create a c++ array with the same values as in your pytorch tensor, 
 3. Add the small amount of PyTorch overhead needed in your cpp file
 
 ### CUDA Implementation
-The way I went about 
+The way I went about parallelizing this code
 
+Here is the .cu code that defines the cuda kernel that computes the output given the input $\mu$, $\sigma$ and $Z$ vectors:
+```cpp
+#include <cuda_runtime_api.h>
+#include <cuda.h>
+#include <curand.h>
+#include <c10/cuda/CUDAException.h>
+/*
+Lets try to create a fast GPU normal dist sampling algorithm:
+It will require this kernels:
+Sample: Input = mu,sigma 1d-vectors, N where N is number of vectors to sample. Output: d*N matrix of vectors
+We can parallelize over each element in the mu,sigma vector and then have each thread write N numbers
+*/
+
+// Threads parallelize over N, blocks parallelize over d
+__global__ void sample(float *d_mu, float *d_sigma, float *d_rand, float *d_output, int d, int N)
+{
+    int dimension_id = blockIdx.x;
+    int sample_id = threadIdx.x;
+
+    d_output[dimension_id * N + sample_id] = d_mu[dimension_id] + d_sigma[dimension_id] * d_rand[sample_id];
+}
+
+void sample_gpu(int d, int num_samples, float *d_mu, float *d_sigma, float *d_output, float *d_rand)
+{
+    sample<<<d, num_samples>>>(d_mu, d_sigma, d_rand, d_output, d, num_samples);
+    C10_CUDA_KERNEL_LAUNCH_CHECK();
+}
+```
 Here is the cpp code that acts as a wrapper for the cuda kernel to work with PyTorch tensors and to use it as a module in Python:
-
-```cpp, sample.cpp
+```cpp
 #include <torch/extension.h>
 #include "ATen/ATen.h"
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), #x " must be a CUDA tensor")
@@ -119,9 +146,42 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
     m.def("sample", &sample, "gpu normal dist sampling");
 }
 ```
-
+We can see that the cpp file is very simple and essentially it just calls the function we defined in the .cu file. Additionally, it creates the output tensor to store the results of the operation and the input random vector. It also does a check to make sure that the tensor is on the GPU and that it is contiguous in memory.
 ### Benchmarks
+Since the kernel I defined could have a max number_of_samples = 1024(sufficient in practice) I fixed the number_of_samples to be 1024 and benchmarked the PyTorch and CUDA kernels while varying the dimension d of the vector.
 
+To properly benchmark gpu kernels, using cuda events is the best way to go about it.
+Clearing the cache is important when running a kernel multiple times since the algorithm will likely run faster when memory is loaded into the cache.
+Starting to time kernels after a few warmup calls can also help, since GPUs can be slow on the first few kernel calls.
+Here is an example of the Python timing code that uses Cuda events, incorporates warmup, and clears the cache every time:
+```python
+times = []
+torch.cuda.empty_cache()
+for i in range(1000):
+    start.record()
+    samples = sample_lib.sample(mu,sigma,num_samples)
+    end.record()
+    torch.cuda.synchronize()
+    torch.cuda.empty_cache()
+    if i > warmup_steps:
+        times.append(start.elapsed_time(end) / 1000)
+my_time = torch.mean(torch.tensor(times))
+print(f'My Kernel Avg Time Taken(s): {my_time}')
+```
+torch.compile is a Pytorch 2.0 feature that helps compile a torch function and possibly optimize it by fusing kernels and other optimizations.
+Using it is as simple as this:
+```python
+def sample_torch(num_samples,mu,sigma):
+    return torch.randn((num_samples,1),device="cuda") * sigma + mu
+compiled_sample_torch = torch.compile(sample_torch)
+```
+I decided to include the compiled code in the benchmark as well.
+
+I ran each kernel 1000 times and average the time taken for the kernel for different vector dimensions d
+Here is a plot of those runtimes:
+
+We can see that the compiled function is slower than both my kernel so I decided to not include it in the next visualization.
+I decided to plot the speedup of my kernel compared to the PyTorch kernel as well for different vector dimensions d:
 ### Conclusion
 
 #### Some Python Code
