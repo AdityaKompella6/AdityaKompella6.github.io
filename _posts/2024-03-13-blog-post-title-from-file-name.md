@@ -185,7 +185,7 @@ torch.compile is a Pytorch 2.0 feature that helps compile a torch function and p
 Using it is as simple as this:
 ```python
 def sample_torch(num_samples,mu,sigma):
-    return torch.randn((num_samples,1),device="cuda") * sigma + mu
+    return mu + sigma * torch.randn((1,num_samples),device="cuda")
 compiled_sample_torch = torch.compile(sample_torch)
 ```
 I decided to include the compiled code in the benchmark as well.
