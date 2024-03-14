@@ -204,6 +204,8 @@ from 1 - 5,000.
 Overall tackling this problem was a great way for me to learn more about how to create CUDA extensions for PyTorch and helped me get exposure to how to speed-up
 code for a certain task.
 
+I have uploaded all the code to Github if you would like to run the benchmarks yourself on your own computer: INSERT LINK
+
 Many more optimizations could be done to this code. The next steps, if you wanted to squeeze out more performance from this code, would be to use a profiler like NCU to determine the bottlenecks in the code and use optimizations like using shared memory and techniques like thread-coarsening or more advanced techniques.
 I would appreciate any feedback in the comments on how I could make this algorithm even faster on what the runtimes look like on much more modern GPUs and if the trends still hold.
 Thanks For Reading :)
