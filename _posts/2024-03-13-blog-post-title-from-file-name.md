@@ -193,7 +193,7 @@ I decided to include the compiled code in the benchmark as well.
 I ran each kernel 1000 times and average the time taken for the kernel for different vector dimensions d
 Here is a plot of those runtimes:
 
-![Alt Text](../_imgs/Random_Sample.png)
+![Alt Text](../_imgs/Kernel_Timing.png)
 
 Since the compiled function is faster than the PyTorch kernel on average, I decided to not include the normal PyTorch kernel in the next visualization.
 
@@ -201,7 +201,7 @@ The Speedup of our kernel = (Compiled Torch Time/ My Kernel Time)
 
 I decided to plot the speedup of my kernel compared to the Compiled PyTorch kernel as well for different vector dimensions d:
 
-![Alt Text](../_imgs/Random_Sample.png)
+![Alt Text](../_imgs/Speedup.png)
 
 We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 3.79 x
 
@@ -218,7 +218,7 @@ What is cool is that our method is a good amount faster than torch.compile on sm
 Pytorch is quite optimized and torch.compile usually creates very efficient code so being able to speed up performance on all vector sizes
 is great and could be very useful in the many algorithms that use it a lot like CEM.
 
-Overall tackling this problem was a great way for me to learn more about how to create CUDA extensions for PyTorch and helped me get exposure to how to speed-up
+Overall tackling this problem was a great way for me to learn more about how to create CUDA extensions for PyTorch and helped me get exposure to how to speed up
 code for a certain task.
 
 I have uploaded all the code to Github if you would like to run the benchmarks yourself on your own computer: INSERT LINK
