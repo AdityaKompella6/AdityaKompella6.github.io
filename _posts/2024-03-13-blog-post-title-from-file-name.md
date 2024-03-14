@@ -147,6 +147,15 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 }
 ```
 We can see that the cpp file is very simple and essentially it just calls the function we defined in the .cu file. Additionally, it creates the output tensor to store the results of the operation and the input random vector. It also does a check to make sure that the tensor is on the GPU and that it is contiguous in memory.
+
+Once you write your sample.cu and sample.cpp files as shown above, loading them in Python is very easy:
+```python
+from torch.utils.cpp_extension import load
+sample_lib = load(name="sample", sources=["sample.cu", f"sample.cpp"],
+                    verbose=True, extra_cuda_cflags=["-res-usage", "--use_fast_math", "-O3", "-Xptxas -O3", "--extra-device-vectorization"])
+//Example of how to call function
+output = sample_lib.sample(mu,sigma,num_samples)
+```
 ### Benchmarks
 The GPU that I used to benchmark this code was the GPU in my local laptop: RTX 3070
 
