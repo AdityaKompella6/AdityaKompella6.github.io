@@ -203,21 +203,21 @@ I decided to plot the speedup of my kernel compared to the Compiled PyTorch kern
 
 ![](/img/Speedup.png)
 
-We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 3.79 x\
-That's close to a 400% increase in performance on average!!!!
+We can see that on average, across all vector sizes form (10-5000), on average the speedup of our kernel is: 1.66 x\
+That's close to a 66% increase in performance on average!!!!
 
 ### Conclusion
 We can see that the compiled torch code is much faster at larger vector sizes than the raw PyTorch code.\
 The speedup we see that my kernel achieves compared to the raw PyTorch kernel could be due to "Kernel Fusion" where our method combines all the operations into one kernel 
 as opposed to calling a multiply kernel and an add kernel.\
-What is cool is that our method is a good amount faster than torch.compile on most vector sizes and much faster(close to 15x on vector sizes ranging from (1500-2500)).\
+What is cool is that our method is a good amount faster than torch.compile on most vector sizes and much faster(close to 2.5x on vector sizes ranging from (10-1000)).\
 Pytorch is quite optimized and torch.compile usually creates very efficient code so being able to speed up performance on all vector sizes
 is great and could be very useful in the many algorithms that use it a lot like CEM.
 
 Overall tackling this problem was a great way for me to learn more about how to create CUDA extensions for PyTorch and helped me get exposure to how to speed up
 code for a certain task.
 
-I have uploaded all the code to Github if you would like to run the benchmarks yourself on your own computer: https://github.com/AdityaKompella6/CudaSampling/
+I have uploaded all the code to Github if you would like to run the benchmarks yourself on your own computer: [Github](https://github.com/AdityaKompella6/CudaSampling/)
 
 Many more optimizations could be done to this code. \
 The next steps, if you wanted to squeeze out more performance from this code, would be to use a profiler like NCU to determine the bottlenecks in the code and use optimizations like using shared memory and techniques like thread-coarsening or more advanced techniques.
